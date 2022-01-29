@@ -1,9 +1,8 @@
-import glob
-from zipfile import Path
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
-import json
+import glob, json, random
+from pathlib import Path
 from datetime import datetime
 
 Builder.load_file('design.kv')
@@ -48,8 +47,13 @@ class LoginScreenSuccess(Screen):
 
         available_feelings = [Path(filename).stem for filename in available_feelings]
 
-        print(available_feelings)
-
+        if feel in available_feelings:
+            with open(f"quotes/{feel}.txt", encoding="utf-8") as file:
+                quotes = file.readlines()
+            # print(quotes)
+            self.ids.quote.text = random.choice(quotes)
+        else:
+            self.ids.quote.text = "Try another feeling"
 
 class RootWidget(ScreenManager):
     pass
